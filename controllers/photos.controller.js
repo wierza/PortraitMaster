@@ -5,7 +5,21 @@ const Photo = require('../models/photo.model');
 exports.add = async (req, res) => {
 
   try {
-    const { title, author, email } = req.fields;
+
+    const escape = function (html) {
+			return html
+				.replace(/&/g, '&amp;')
+				.replace(/</g, '&lt;')
+				.replace(/>/g, '&gt;')
+				.replace(/"/g, '&quot;')
+				.replace(/'/g, '&#039;')
+		};
+
+    let { title, author, email } = req.fields;
+    title = escape(title);
+		author = escape(author);
+		email = escape(email);
+
     const file = req.files.file;
 
     const allowedExt = ['gif', 'jpg', 'jpeg', 'png'];
